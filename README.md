@@ -1,2 +1,2 @@
 # Web-server
-基于IO多路复用技术的高并发web服务器
+基于IO多路复用技术的3种实现方式select、poll与epoll分别开发了支持高并发的web服务器，可以返回给客户端一个动态页面，主要包含用JavaScript编写的贪吃蛇小游戏。
