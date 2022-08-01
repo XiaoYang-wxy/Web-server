@@ -12,6 +12,7 @@ char port[6] = "10613";
 
 int main()
 {
+    /*定义一些用于获取客户端信息的变量*/
     socklen_t clientlen = sizeof(sockaddr_storage);
     sockaddr_storage clientaddr; /*enough space for any address*/
     char client_hostname[MAX_LINE], client_port[MAX_LINE];
@@ -28,15 +29,17 @@ int main()
     int epoll_fd = epoll_create(SIZE), nfds;
     epoll_event event, *events = new epoll_event[SIZE];
     event.data.fd = listenfd;
-    event.events = EPOLLIN | EPOLLET;
+    event.events = EPOLLIN | EPOLLET;/*设置为ET模式*/
     epoll_ctl(epoll_fd, EPOLL_CTL_ADD, listenfd, &event);
 
     /*开始监测请求*/
     for (int i;;)
     {
+        /*从内核获取就绪的描述符*/
         nfds = epoll_wait(epoll_fd, events, SIZE, -1);
         for (i = 0; i < nfds; i++)
         {
+            /*当有连接请求时*/
             if (events[i].data.fd == listenfd && (events[i].events & EPOLLIN))
             {
                 connfd = accept(listenfd, (sockaddr *)&clientaddr, &clientlen);
@@ -49,6 +52,7 @@ int main()
                     printf("<connect to %s:%s>\n", client_hostname, client_port);
                 }
             }
+            /*当有http请求时*/
             else if (events[i].events & EPOLLIN)
             {
                 echo(events[i].data.fd);
