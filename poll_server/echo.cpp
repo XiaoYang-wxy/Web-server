@@ -12,13 +12,10 @@ void echo(int connfd)
     int len = fread(senddata, 1, max_size, fp1);
     len += fread(senddata + len, 1, max_size, fp2);
     
-    /*展示请求报文，发送响应报文*/
-    while (recv(connfd, buf, max_size, 0) != 0)
-    {
-        printf("%s\n", buf);
-        send(connfd, senddata, len, 0);
-        break;
-    }
+    /*接收并展示请求报文，发送响应报文*/
+    recv(connfd, buf, max_size, 0);
+    printf("%s\n", buf);
+    send(connfd, senddata, len, 0);
     
     fclose(fp1);
     fclose(fp2);
