@@ -2,7 +2,7 @@
 #include <string.h>
 #include <netdb.h>
 #include <sys/socket.h>
-const int listenq = 10;
+const int listenq = 1024;
 int open_listenfd(char *port)
 {
     addrinfo hints, *listp, *p;
